@@ -12,29 +12,23 @@ import fr.klin.ft_hangouts.MainActivity
 import fr.klin.ft_hangouts.R
 import fr.klin.ft_hangouts.adapter.ContactAdapter
 
-class HomeFragment(private val context: MainActivity) : Fragment() {
-
+class MessageFragmentFragment(
+    private val context: MainActivity,
+    private val number: String
+) : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.fragment_home, container, false)
+        val view = inflater?.inflate(R.layout.fragment_message, container, false)
 
-        val db = DataBaseHelper(context)
-        val contactList = db.allContacts
+//        val db = DataBaseHelper(context)
+//        val messageList = db.allContacts
         val transaction = fragmentManager?.beginTransaction()
 
-        val verticalRecyclerView = view.findViewById<RecyclerView>(R.id.vertical_recycler_view)
-        verticalRecyclerView.adapter = ContactAdapter(contactList, context, transaction)
+        val verticalRecyclerView = view.findViewById<RecyclerView>(R.id.recycler_message)
+        verticalRecyclerView.adapter = ContactAdapter(messagetList, context, transaction)
 
         val actionBar = context.supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(false)
 
-        val buttonAdd = view.findViewById<ImageButton>(R.id.b_add)
-            buttonAdd.setOnClickListener {
-            transaction?.replace(R.id.fragment_container, ContactAddFragment(context, null))
-            transaction?.addToBackStack(null)
-            transaction?.commit()
-        }
-
         return view
     }
-
 }

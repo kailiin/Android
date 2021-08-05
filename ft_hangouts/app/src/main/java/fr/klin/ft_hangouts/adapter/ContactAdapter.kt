@@ -27,7 +27,6 @@ class ContactAdapter(
         val view = LayoutInflater
             .from(parent.context)
             .inflate(R.layout.item_vertical_contact, parent, false)
-
         return ViewHolder(view)
     }
 
