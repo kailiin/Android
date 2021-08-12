@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import fr.klin.ft_hangouts.MainActivity
@@ -12,7 +13,7 @@ import fr.klin.ft_hangouts.model.MessageModel
 
 
 class MessageAdapter(
-    private var myList: List<MessageModel>,
+    myList: List<MessageModel>,
     private val context: MainActivity,
     private val transaction: FragmentTransaction?
     ) : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
@@ -20,7 +21,10 @@ class MessageAdapter(
     var messageList = myList.toMutableList()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val messageText: TextView = view.findViewById(R.id.text_sms)
+        val messageTextL: TextView = view.findViewById(R.id.text_sms_l)
+        val messageContentL: CardView = view.findViewById(R.id.message_content_l)
+        val messageTextR: TextView = view.findViewById(R.id.text_sms_r)
+        val messageContentR: CardView = view.findViewById(R.id.message_content_r)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,7 +36,13 @@ class MessageAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentMessage = messageList[position]
-        holder.messageText.text = currentMessage.text
+        if (currentMessage.send == 0) {
+            holder.messageTextL.text = currentMessage.text
+            holder.messageContentL.visibility = View.VISIBLE
+        } else {
+            holder.messageTextR.text = currentMessage.text
+            holder.messageContentR.visibility = View.VISIBLE
+        }
     }
 
     override fun getItemCount(): Int {

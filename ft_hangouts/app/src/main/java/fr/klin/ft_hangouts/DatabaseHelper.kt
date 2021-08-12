@@ -111,9 +111,9 @@ class DataBaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         return contact
     }
 
-    fun numberExistence(contact: ContactModel): Boolean {
+    fun numberExistence(strPhone: String): Boolean {
         this.allContacts.forEach {
-            if (it.number == contact.number)
+            if (it.number.toString() == strPhone)
                 return true
         }
         return false

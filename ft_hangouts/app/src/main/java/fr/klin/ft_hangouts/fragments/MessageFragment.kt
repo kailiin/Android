@@ -24,21 +24,25 @@ class MessageFragment(
     private val context: MainActivity,
     private val phoneNumber: String
 ) : Fragment() {
+
+    val db = DataMessage(context)
+    lateinit var messageAdapter: MessageAdapter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_message, container, false)
 
         //get all messages ans set recyclerView
-        val db = DataMessage(context)
         val messageList = db.getAllMessage(phoneNumber)
         val transaction = fragmentManager?.beginTransaction()
         val messageRecyclerView = view.findViewById<RecyclerView>(R.id.recycler_message)
-        val messageAdapter = MessageAdapter(messageList, context, transaction)
+        messageAdapter = MessageAdapter(messageList, context, transaction)
         messageRecyclerView.adapter = messageAdapter
 
 
         //set actionBar, back button
         val actionBar = context.supportActionBar
-        actionBar?.setDisplayHomeAsUpEnabled(false)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.title = phoneNumber
 
         val strText = view.findViewById<EditText>(R.id.text_message)
         val buttonSend = view.findViewById<Button>(R.id.button_send)
@@ -47,16 +51,25 @@ class MessageFragment(
             if (ActivityCompat.checkSelfPermission(context,
                     android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED
                 && strText != null) {
-                val sms: String = strText.getText().toString()
-                val smsManager = SmsManager.getDefault()
-                smsManager.sendTextMessage(phoneNumber, null, sms, null, null)
-                val message = MessageModel(null, phoneNumber, 1, "", sms)
-                db.addMessage(message)
-                messageAdapter.updateData(message)
-                strText.setText("")
+                val sms: String = strText.text.toString()
+                if (sms.isNotEmpty()) {
+                    val smsManager = SmsManager.getDefault()
+                    smsManager.sendTextMessage(phoneNumber, null, sms, null, null)
+                    val message = MessageModel(null, phoneNumber, 1, "", sms)
+                    db.addMessage(message)
+                    messageAdapter.updateData(message)
+                    strText.setText("")
+                }
             }
         }
 
         return view
     }
+
+    fun refreshMessage(phone: String, message: MessageModel) {
+        if (phone == phoneNumber) {
+            messageAdapter.updateData(message)
+        }
+    }
+
 }

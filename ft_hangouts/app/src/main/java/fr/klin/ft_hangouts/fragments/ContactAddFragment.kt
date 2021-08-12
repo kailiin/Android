@@ -63,13 +63,13 @@ class ContactAddFragment(
                     strNote.text.toString(),
                 )
                 if (contact != null) {
-                    if (newContact.number == contact.number || !db.numberExistence(newContact)) {
+                    if (newContact.number == contact.number || !db.numberExistence(strNumber.toString())) {
                         contact.id?.let { it -> db.updateContact(newContact, it) }
                         popBack()
                     } else
                         strWarning.text = getString(R.string.error_exist)
                 }
-                else if (!db.numberExistence(newContact)) {
+                else if (!db.numberExistence(strNumber.toString())) {
                     db.addContact(newContact)
                     popBack()
                 } else

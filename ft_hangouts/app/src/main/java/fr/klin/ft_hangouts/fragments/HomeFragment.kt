@@ -37,4 +37,10 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
         return view
     }
 
+    fun refresh(){
+        println(("refresh"))
+        val transaction = fragmentManager?.beginTransaction()
+        transaction?.detach(this)?.attach(this)?.commit()
+    }
+
 }
