@@ -62,10 +62,14 @@ class ContactInfoFragment(
 
         //set message button
         button_message.setOnClickListener {
+            phoneNumber = strNumber.text.toString()
             if (ActivityCompat.checkSelfPermission(context,
-                    android.Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED)
-                //sms fragm
-            else
+                    android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.fragment_container, MessageFragment(context, phoneNumber))
+                transaction?.addToBackStack(null)
+                transaction?.commit()
+            } else
                 Toast.makeText(context, getString(R.string.permission_sms), Toast.LENGTH_LONG).show()
         }
 
