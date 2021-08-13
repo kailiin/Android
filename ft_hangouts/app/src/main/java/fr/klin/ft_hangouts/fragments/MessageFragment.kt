@@ -26,17 +26,20 @@ class MessageFragment(
 ) : Fragment() {
 
     val db = DataMessage(context)
+    private lateinit var messageList: List<MessageModel>
+    lateinit var messageRecyclerView: RecyclerView
     lateinit var messageAdapter: MessageAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_message, container, false)
 
         //get all messages ans set recyclerView
-        val messageList = db.getAllMessage(phoneNumber)
+        messageList = db.getAllMessage(phoneNumber)
         val transaction = fragmentManager?.beginTransaction()
-        val messageRecyclerView = view.findViewById<RecyclerView>(R.id.recycler_message)
+        messageRecyclerView = view.findViewById<RecyclerView>(R.id.recycler_message)
         messageAdapter = MessageAdapter(messageList, context, transaction)
         messageRecyclerView.adapter = messageAdapter
+//        messageRecyclerView.scrollToPosition(messageList.size)
 
 
         //set actionBar, back button
@@ -69,6 +72,7 @@ class MessageFragment(
     fun refreshMessage(phone: String, message: MessageModel) {
         if (phone == phoneNumber) {
             messageAdapter.updateData(message)
+            messageRecyclerView.scrollToPosition(messageList.size - 1)
         }
     }
 
