@@ -14,8 +14,7 @@ import fr.klin.ft_hangouts.model.MessageModel
 
 class MessageAdapter(
     myList: List<MessageModel>,
-    private val context: MainActivity,
-    private val transaction: FragmentTransaction?
+    private val recyclerView: RecyclerView
     ) : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
 
     var messageList = myList.toMutableList()
@@ -31,6 +30,7 @@ class MessageAdapter(
         val view = LayoutInflater
             .from(parent.context)
             .inflate(R.layout.item_message, parent, false)
+        recyclerView.scrollToPosition(messageList.size - 1)
         return ViewHolder(view)
     }
 
@@ -52,6 +52,7 @@ class MessageAdapter(
     fun updateData(sms: MessageModel) {
         messageList.add(sms)
         notifyDataSetChanged()
+        recyclerView.scrollToPosition(messageList.size - 1)
     }
 
 }

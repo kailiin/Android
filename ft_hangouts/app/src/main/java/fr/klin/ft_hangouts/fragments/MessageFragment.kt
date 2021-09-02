@@ -37,10 +37,8 @@ class MessageFragment(
         messageList = db.getAllMessage(phoneNumber)
         val transaction = fragmentManager?.beginTransaction()
         messageRecyclerView = view.findViewById<RecyclerView>(R.id.recycler_message)
-        messageAdapter = MessageAdapter(messageList, context, transaction)
+        messageAdapter = MessageAdapter(messageList, messageRecyclerView)
         messageRecyclerView.adapter = messageAdapter
-//        messageRecyclerView.scrollToPosition(messageList.size)
-
 
         //set actionBar, back button
         val actionBar = context.supportActionBar
@@ -72,7 +70,6 @@ class MessageFragment(
     fun refreshMessage(phone: String, message: MessageModel) {
         if (phone == phoneNumber) {
             messageAdapter.updateData(message)
-            messageRecyclerView.scrollToPosition(messageList.size - 1)
         }
     }
 

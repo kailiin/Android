@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ft_hangouts</string>
+    <string name="app_name" translatable="false">ft_hangouts</string>
 
     <string name="permission_call">Call phone permission needed</string>
     <string name="permission_sms">SMS permission needed</string>
@@ -20,6 +20,6 @@
 
     <string name="header">Header</string>
     <string name="error_exist">Contact with this number already exists!</string>
-    <string name="error_number">Phone number error!</string>
+    <string name="error_number">"Phone number error! "</string>
 
 </resources>
