@@ -1,9 +1,7 @@
 package fr.klin.ft_hangouts.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -25,11 +23,13 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
         verticalRecyclerView.adapter = ContactAdapter(contactList, context, transaction)
 
         val actionBar = context.supportActionBar
+        setHasOptionsMenu(true)
         actionBar?.setDisplayHomeAsUpEnabled(false)
+        actionBar?.title = "FT_Hangouts"
 
         val buttonAdd = view.findViewById<ImageButton>(R.id.b_add)
             buttonAdd.setOnClickListener {
-            transaction?.replace(R.id.fragment_container, ContactAddFragment(context, null))
+            transaction?.replace(R.id.fragment_container, ContactAddFragment(context, null, getString(R.string.add)))
             transaction?.addToBackStack(null)
             transaction?.commit()
         }
@@ -41,6 +41,23 @@ class HomeFragment(private val context: MainActivity) : Fragment() {
         println(("refresh"))
         val transaction = fragmentManager?.beginTransaction()
         transaction?.detach(this)?.attach(this)?.commit()
+    }
+
+    // menu item action
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_header, menu)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_header_menu -> {
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.fragment_container, HeaderFragment(context))
+                transaction?.addToBackStack(null)
+                transaction?.commit()
+                true
+            }
+            else -> true
+        }
     }
 
 }

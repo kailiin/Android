@@ -1,5 +1,6 @@
 package fr.klin.ft_hangouts.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class ContactAdapter(
         return ViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentContact = contactList[position]
         holder.contactName.text = currentContact.first_name + " " + currentContact.last_name

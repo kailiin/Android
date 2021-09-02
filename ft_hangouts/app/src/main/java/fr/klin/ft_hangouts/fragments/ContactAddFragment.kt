@@ -18,7 +18,8 @@ import fr.klin.ft_hangouts.model.ContactModel
 
 class ContactAddFragment(
     private val context: MainActivity,
-    private val contact: ContactModel?
+    private val contact: ContactModel?,
+    private val titleName: String
     ): Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -37,6 +38,7 @@ class ContactAddFragment(
 
         val actionBar = context.supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.title = titleName
 
         if (contact != null) {
             strFname.setText(contact.first_name)

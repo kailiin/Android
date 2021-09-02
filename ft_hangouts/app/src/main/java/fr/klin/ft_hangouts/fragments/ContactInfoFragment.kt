@@ -1,5 +1,6 @@
 package fr.klin.ft_hangouts.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -25,6 +26,7 @@ class ContactInfoFragment(
     private val db = DataBaseHelper(context)
     lateinit var phoneNumber: String
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_contact_info, container, false)
 
@@ -33,10 +35,10 @@ class ContactInfoFragment(
         val strEmail = view.findViewById<TextView>(R.id.info_email)
         val strAddress = view.findViewById<TextView>(R.id.info_address)
         val strNote = view.findViewById<TextView>(R.id.info_note)
-        val button_call = view.findViewById<ImageButton>(R.id.button_call)
-        val button_message = view.findViewById<ImageButton>(R.id.button_message)
-        val button_cancel = view.findViewById<Button>(R.id.info_b_cancel)
-        val button_modify = view.findViewById<Button>(R.id.info_b_modify)
+        val buttonCall = view.findViewById<ImageButton>(R.id.button_call)
+        val buttonMessage = view.findViewById<ImageButton>(R.id.button_message)
+        val buttonCancel = view.findViewById<Button>(R.id.info_b_cancel)
+        val buttonModify = view.findViewById<Button>(R.id.info_b_modify)
 
         var contact = db.getContact(contactID.toString())
         strName.text = contact.first_name + " " + contact.last_name
@@ -49,9 +51,10 @@ class ContactInfoFragment(
         setHasOptionsMenu(true)
         val actionBar = context.supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.title = strNumber.text
 
         //set call button
-        button_call.setOnClickListener {
+        buttonCall.setOnClickListener {
             phoneNumber = strNumber.text.toString()
             if (ActivityCompat.checkSelfPermission(context,
                     android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED)
@@ -61,7 +64,7 @@ class ContactInfoFragment(
         }
 
         //set message button
-        button_message.setOnClickListener {
+        buttonMessage.setOnClickListener {
             phoneNumber = strNumber.text.toString()
             if (ActivityCompat.checkSelfPermission(context,
                     android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
@@ -74,14 +77,14 @@ class ContactInfoFragment(
         }
 
         //set cancel button
-        button_cancel.setOnClickListener {
+        buttonCancel.setOnClickListener {
             popBack()
         }
 
         //set modify button
-        button_modify.setOnClickListener {
+        buttonModify.setOnClickListener {
             val transaction = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.fragment_container, ContactAddFragment(context, contact))
+            transaction?.replace(R.id.fragment_container, ContactAddFragment(context, contact, getString(R.string.modify)))
             transaction?.addToBackStack(null)
             transaction?.commit()
         }
